@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // قابل تغییر به دیتابیس دلخواه
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id              String    @id @default(uuid())
+  firstName       String?
+  lastName        String?
+  username        String    @unique  // فیلد جدید: نام کاربری
+  email           String    @unique
+  phone           String?   @unique  // فیلد جدید: شماره موبایل
+  passwordHash    String?   // اختیاری شده (?) برای پشتیبانی از گوگل و Passkeys در آینده
+  role            Role      @default(USER)
+  
+  // به جای یک isVerified کلی، آن را برای دقت بیشتر به دو بخش ایمیل و موبایل تفکیک کردیم
+  isEmailVerified Boolean   @default(false)
+  isPhoneVerified Boolean   @default(false)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // روابط (Relations)
+  sessions        Session[]
+  authenticators  Authenticator[] // فیلد جدید: ارتباط با کلیدهای عبور (Passkeys)
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  sessionToken String   @unique  // فیلد جدید: برای ساختار امنیتی جدید نشست‌ها
+  refreshToken String?  @unique  // (از کد قبلی شما حفظ شد)
+  deviceInfo   String?  // (از کد قبلی شما حفظ شد)
+  ipAddress    String?  // (از کد قبلی شما حفظ شد)
+  expiresAt    DateTime // (از کد قبلی شما حفظ شد)
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// جدول کاملاً جدید برای ذخیره کلیدهای عبور (WebAuthn / Passkeys)
+model Authenticator {
+  id                   String  @id @default(uuid())
+  credentialID         String  @unique // شناسه یکتای تولید شده توسط دستگاه کاربر
+  userId               String
+  providerAccountId    String  
+  credentialPublicKey  String  // کلید عمومی برای اعتبارسنجی لاگین‌های بعدی
+  counter              Int     // شمارنده برای جلوگیری از حملات Replay
+  credentialDeviceType String  // نوع دستگاه (مثلا singleDevice یا multiDevice)
+  credentialBackedUp   Boolean // آیا کلید در iCloud/Google Password Manager بک‌آپ گرفته شده؟
+  transports           String? // نحوه ارتباط (usb, ble, nfc, internal)
+  
+  name                 String? // نام انتخابی کاربر برای این کلید (مثلا "آیفون من")
+  createdAt            DateTime @default(now())
+  lastUsedAt           DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
