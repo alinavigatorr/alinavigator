@@ -1,68 +1,112 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql" // قابل تغییر به دیتابیس دلخواه
-  url      = env("DATABASE_URL")
-}
-
-enum Role {
-  USER
-  ADMIN
-  EDITOR
-}
+// ==========================================
+// IDENTITY & ACCESS MANAGEMENT (IAM)
+// ==========================================
 
 model User {
-  id              String    @id @default(uuid())
+  id              String     @id @default(uuid())
   firstName       String?
   lastName        String?
-  username        String    @unique  // فیلد جدید: نام کاربری
-  email           String    @unique
-  phone           String?   @unique  // فیلد جدید: شماره موبایل
-  passwordHash    String?   // اختیاری شده (?) برای پشتیبانی از گوگل و Passkeys در آینده
-  role            Role      @default(USER)
-  
-  // به جای یک isVerified کلی، آن را برای دقت بیشتر به دو بخش ایمیل و موبایل تفکیک کردیم
-  isEmailVerified Boolean   @default(false)
-  isPhoneVerified Boolean   @default(false)
-  
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  username        String     @unique
+  email           String     @unique
+  phone           String?    @unique
+  passwordHash    String?
+  status          UserStatus @default(ACTIVE)
 
-  // روابط (Relations)
+  isEmailVerified Boolean    @default(false)
+  isPhoneVerified Boolean    @default(false)
+
+  // --- Base Conventions ---
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  deletedAt       DateTime?  // Soft Delete
+  version         Int        @default(1) // Optimistic Locking
+
+  // --- Relations ---
   sessions        Session[]
-  authenticators  Authenticator[] // فیلد جدید: ارتباط با کلیدهای عبور (Passkeys)
+  authenticators  Authenticator[]
+  roles           Role[]     @relation("UserRoles")
+  
+  // (روابط دیگر مثل CustomerProfile, Seller, Wallet و... در مدل‌های بعدی اضافه می‌شوند)
+
+  // --- Indexes ---
+  @@index([email])
+  @@index([username])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model Session {
-  id           String   @id @default(uuid())
+  id           String    @id @default(uuid())
   userId       String
-  sessionToken String   @unique  // فیلد جدید: برای ساختار امنیتی جدید نشست‌ها
-  refreshToken String?  @unique  // (از کد قبلی شما حفظ شد)
-  deviceInfo   String?  // (از کد قبلی شما حفظ شد)
-  ipAddress    String?  // (از کد قبلی شما حفظ شد)
-  expiresAt    DateTime // (از کد قبلی شما حفظ شد)
-  createdAt    DateTime @default(now())
+  sessionToken String    @unique
+  refreshToken String?   @unique
+  deviceInfo   String?
+  ipAddress    String?
+  expiresAt    DateTime
+  
+  // --- Base Conventions ---
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  version      Int       @default(1)
 
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
-// جدول کاملاً جدید برای ذخیره کلیدهای عبور (WebAuthn / Passkeys)
 model Authenticator {
-  id                   String  @id @default(uuid())
-  credentialID         String  @unique // شناسه یکتای تولید شده توسط دستگاه کاربر
+  id                   String    @id @default(uuid())
+  credentialID         String    @unique
   userId               String
   providerAccountId    String  
-  credentialPublicKey  String  // کلید عمومی برای اعتبارسنجی لاگین‌های بعدی
-  counter              Int     // شمارنده برای جلوگیری از حملات Replay
-  credentialDeviceType String  // نوع دستگاه (مثلا singleDevice یا multiDevice)
-  credentialBackedUp   Boolean // آیا کلید در iCloud/Google Password Manager بک‌آپ گرفته شده؟
-  transports           String? // نحوه ارتباط (usb, ble, nfc, internal)
-  
-  name                 String? // نام انتخابی کاربر برای این کلید (مثلا "آیفون من")
-  createdAt            DateTime @default(now())
-  lastUsedAt           DateTime @default(now())
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+  name                 String?
+  lastUsedAt           DateTime  @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // --- Base Conventions ---
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  deletedAt            DateTime?
+  version              Int       @default(1)
+
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Role {
+  id          String       @id @default(uuid())
+  name        String       @unique // e.g., 'SUPER_ADMIN', 'SELLER', 'CUSTOMER'
+  description String?
+
+  // --- Base Conventions ---
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  version     Int          @default(1)
+
+  // --- Relations ---
+  users       User[]       @relation("UserRoles")
+  permissions Permission[] @relation("RolePermissions")
+}
+
+model Permission {
+  id          String    @id @default(uuid())
+  code        String    @unique // e.g., 'orders:delete', 'products:write'
+  name        String
+  description String?
+
+  // --- Base Conventions ---
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  version     Int       @default(1)
+
+  // --- Relations ---
+  roles       Role[]    @relation("RolePermissions")
 }
