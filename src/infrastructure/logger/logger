@@ -1,0 +1,49 @@
+/**
+ * Log levels supported by the centralized logger.
+ */
+export enum LogLevel {
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+  WARN = 'WARN',
+  ERROR = 'ERROR',
+}
+
+interface LogMetadata {
+  [key: string]: unknown;
+}
+
+/**
+ * Centralized Application Logger.
+ * Environment-aware and ready for external log shipping (e.g., Datadog, Winston, OpenTelemetry).
+ */
+export class Logger {
+  private static isProduction = process.env.NODE_ENV === 'production';
+
+  private static formatMessage(level: LogLevel, message: string, meta?: LogMetadata): string {
+    const timestamp = new Date().toISOString();
+    const payload = meta ? JSON.stringify(meta) : '';
+    return `[${timestamp}] [${level}] ${message} ${payload}`;
+  }
+
+  static debug(message: string, meta?: LogMetadata): void {
+    if (!this.isProduction) {
+      console.debug(this.formatMessage(LogLevel.DEBUG, message, meta));
+    }
+  }
+
+  static info(message: string, meta?: LogMetadata): void {
+    console.info(this.formatMessage(LogLevel.INFO, message, meta));
+  }
+
+  static warn(message: string, meta?: LogMetadata): void {
+    console.warn(this.formatMessage(LogLevel.WARN, message, meta));
+  }
+
+  static error(message: string, error?: Error | unknown, meta?: LogMetadata): void {
+    const errorDetails = error instanceof Error 
+      ? { errorMessage: error.message, stack: error.stack, ...meta }
+      : { error, ...meta };
+      
+    console.error(this.formatMessage(LogLevel.ERROR, message, errorDetails));
+  }
+}
