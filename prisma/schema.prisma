@@ -95,20 +95,20 @@ model User {
   // --- Base Conventions ---
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
-  deletedAt       DateTime?  // Soft Delete
-  version         Int        @default(1) // Optimistic Locking
+  deletedAt       DateTime?
+  version         Int        @default(1)
 
   // --- Relations ---
   sessions        Session[]
   authenticators  Authenticator[]
   roles           Role[]           @relation("UserRoles")
-  
-  // Relations to Profiles and Wallet
   customerProfile CustomerProfile?
   sellerProfile   Seller?
   wallet          Wallet?
+  orders          Order[]
+  reviews         Review[]
+  notifications   Notification[]
 
-  // --- Indexes ---
   @@index([email])
   @@index([username])
   @@index([status])
@@ -124,7 +124,6 @@ model Session {
   ipAddress    String?
   expiresAt    DateTime
   
-  // --- Base Conventions ---
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
@@ -148,7 +147,6 @@ model Authenticator {
   name                 String?
   lastUsedAt           DateTime  @default(now())
 
-  // --- Base Conventions ---
   createdAt            DateTime  @default(now())
   updatedAt            DateTime  @updatedAt
   deletedAt            DateTime?
@@ -164,13 +162,11 @@ model Role {
   name        String       @unique
   description String?
 
-  // --- Base Conventions ---
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   deletedAt   DateTime?
   version     Int          @default(1)
 
-  // --- Relations ---
   users       User[]       @relation("UserRoles")
   permissions Permission[] @relation("RolePermissions")
 }
@@ -181,13 +177,11 @@ model Permission {
   name        String
   description String?
 
-  // --- Base Conventions ---
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
   version     Int       @default(1)
 
-  // --- Relations ---
   roles       Role[]    @relation("RolePermissions")
 }
 
@@ -201,7 +195,6 @@ model CustomerProfile {
   bio         String?
   dateOfBirth DateTime?
   
-  // --- Base Conventions ---
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
@@ -218,14 +211,14 @@ model Seller {
   logoUrl     String?
   isVerified  Boolean   @default(false)
   
-  // --- Base Conventions ---
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime?
   version     Int       @default(1)
 
-  // --- Relations ---
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products    Product[]
+  replies     SellerReply[]
 
   @@index([storeName])
 }
@@ -240,13 +233,11 @@ model Wallet {
   currency     String    @default("USD")
   isActive     Boolean   @default(true)
   
-  // --- Base Conventions ---
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   deletedAt    DateTime?
   version      Int       @default(1)
 
-  // --- Relations ---
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions WalletTransaction[]
 }
@@ -259,7 +250,6 @@ model WalletTransaction {
   referenceId String?               
   description String?
   
-  // --- Base Conventions ---
   createdAt   DateTime              @default(now())
   updatedAt   DateTime              @updatedAt
   deletedAt   DateTime?
@@ -270,4 +260,236 @@ model WalletTransaction {
   @@index([walletId])
   @@index([type])
   @@index([createdAt])
+}
+
+// ==========================================
+// CATALOG (PRODUCTS, CATEGORIES, INVENTORY)
+// ==========================================
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  parentId    String?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  version     Int       @default(1)
+
+  parent      Category?  @relation("CategoryToCategory", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryToCategory")
+  products    Product[]
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  sellerId    String
+  categoryId  String
+  title       String
+  slug        String    @unique
+  description String?
+  basePrice   Float
+  isPublished Boolean   @default(false)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  version     Int       @default(1)
+
+  seller      Seller    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  variants    ProductVariant[]
+  inventories Inventory[]
+  orderItems  OrderItem[]
+  reviews     Review[]
+
+  @@index([sellerId])
+  @@index([categoryId])
+  @@index([slug])
+  @@index([createdAt])
+}
+
+model ProductVariant {
+  id              String    @id @default(uuid())
+  productId       String
+  sku             String    @unique
+  name            String    
+  additionalPrice Float     @default(0.0)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+  version         Int       @default(1)
+
+  product         Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  inventories     Inventory[]
+
+  @@index([productId])
+  @@index([sku])
+}
+
+model Inventory {
+  id                String    @id @default(uuid())
+  productId         String
+  variantId         String?
+  quantity          Int       @default(0)
+  warehouseLocation String?   
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  deletedAt         DateTime?
+  version           Int       @default(1)
+
+  product           Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant           ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([variantId])
+}
+
+// ==========================================
+// ORDERS, REVIEWS & ENGAGEMENT
+// ==========================================
+model Order {
+  id            String      @id @default(uuid())
+  userId        String
+  totalAmount   Float
+  status        OrderStatus @default(PENDING)
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
+  version       Int         @default(1)
+
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items         OrderItem[]
+  returnRequests ReturnRequest[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id          String    @id @default(uuid())
+  orderId     String
+  productId   String
+  quantity    Int
+  unitPrice   Float
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  version     Int       @default(1)
+
+  order       Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model Review {
+  id          String       @id @default(uuid())
+  userId      String
+  productId   String
+  rating      Int
+  comment     String?
+  status      ReviewStatus @default(PENDING)
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  version     Int          @default(1)
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product     Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  sellerReply SellerReply?
+
+  @@index([userId])
+  @@index([productId])
+  @@index([status])
+}
+
+model SellerReply {
+  id          String    @id @default(uuid())
+  reviewId    String    @unique
+  sellerId    String
+  comment     String
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  version     Int       @default(1)
+
+  review      Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  seller      Seller    @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+}
+
+model Coupon {
+  id              String       @id @default(uuid())
+  code            String       @unique
+  discountPercent Float
+  status          CouponStatus @default(ACTIVE)
+  expiresAt       DateTime
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  deletedAt       DateTime?
+  version         Int          @default(1)
+
+  @@index([code])
+  @@index([status])
+}
+
+model Campaign {
+  id          String         @id @default(uuid())
+  title       String
+  status      CampaignStatus @default(DRAFT)
+  startDate   DateTime
+  endDate     DateTime
+  
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
+  version     Int            @default(1)
+
+  @@index([status])
+}
+
+model Notification {
+  id          String               @id @default(uuid())
+  userId      String
+  title       String
+  message     String
+  priority    NotificationPriority @default(LOW)
+  isRead      Boolean              @default(false)
+  
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  deletedAt   DateTime?
+  version     Int                  @default(1)
+
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+model ReturnRequest {
+  id          String       @id @default(uuid())
+  orderId     String
+  reason      String
+  status      ReturnStatus @default(REQUESTED)
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  version     Int          @default(1)
+
+  order       Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
 }
