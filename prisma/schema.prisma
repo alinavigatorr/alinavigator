@@ -1,7 +1,84 @@
 // ==========================================
+// CONFIGURATION
+// ==========================================
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum WalletTransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  PURCHASE
+  REFUND
+  COMMISSION
+  ADJUSTMENT
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  ACTIVE
+  PAUSED
+  EXPIRED
+}
+
+enum CouponStatus {
+  ACTIVE
+  EXPIRED
+  EXHAUSTED
+  DISABLED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum NotificationPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ReturnStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+  ITEM_RECEIVED
+  REFUNDED
+}
+
+// ==========================================
 // IDENTITY & ACCESS MANAGEMENT (IAM)
 // ==========================================
-
 model User {
   id              String     @id @default(uuid())
   firstName       String?
@@ -24,9 +101,12 @@ model User {
   // --- Relations ---
   sessions        Session[]
   authenticators  Authenticator[]
-  roles           Role[]     @relation("UserRoles")
+  roles           Role[]           @relation("UserRoles")
   
-  // (روابط دیگر مثل CustomerProfile, Seller, Wallet و... در مدل‌های بعدی اضافه می‌شوند)
+  // Relations to Profiles and Wallet
+  customerProfile CustomerProfile?
+  sellerProfile   Seller?
+  wallet          Wallet?
 
   // --- Indexes ---
   @@index([email])
@@ -81,7 +161,7 @@ model Authenticator {
 
 model Role {
   id          String       @id @default(uuid())
-  name        String       @unique // e.g., 'SUPER_ADMIN', 'SELLER', 'CUSTOMER'
+  name        String       @unique
   description String?
 
   // --- Base Conventions ---
@@ -97,7 +177,7 @@ model Role {
 
 model Permission {
   id          String    @id @default(uuid())
-  code        String    @unique // e.g., 'orders:delete', 'products:write'
+  code        String    @unique
   name        String
   description String?
 
@@ -109,4 +189,85 @@ model Permission {
 
   // --- Relations ---
   roles       Role[]    @relation("RolePermissions")
+}
+
+// ==========================================
+// PROFILES & MULTI-VENDOR
+// ==========================================
+model CustomerProfile {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  avatarUrl   String?
+  bio         String?
+  dateOfBirth DateTime?
+  
+  // --- Base Conventions ---
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  version     Int       @default(1)
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Seller {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  storeName   String    @unique
+  description String?
+  logoUrl     String?
+  isVerified  Boolean   @default(false)
+  
+  // --- Base Conventions ---
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  version     Int       @default(1)
+
+  // --- Relations ---
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([storeName])
+}
+
+// ==========================================
+// FINANCIALS (WALLET SYSTEM)
+// ==========================================
+model Wallet {
+  id           String    @id @default(uuid())
+  userId       String    @unique
+  balance      Float     @default(0.0)
+  currency     String    @default("USD")
+  isActive     Boolean   @default(true)
+  
+  // --- Base Conventions ---
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+  version      Int       @default(1)
+
+  // --- Relations ---
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions WalletTransaction[]
+}
+
+model WalletTransaction {
+  id          String                @id @default(uuid())
+  walletId    String
+  amount      Float
+  type        WalletTransactionType
+  referenceId String?               
+  description String?
+  
+  // --- Base Conventions ---
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  deletedAt   DateTime?
+  version     Int                   @default(1)
+
+  wallet      Wallet                @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@index([walletId])
+  @@index([type])
+  @@index([createdAt])
 }
