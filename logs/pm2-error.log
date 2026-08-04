@@ -733,3 +733,301 @@ Reparsing as ES module because module syntax was detected. This incurs a perform
 To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 2026-08-03 15:43:12 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-03 19:04:30 +00:00: (node:66685) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-03 19:04:30 +00:00: (node:66684) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-03 19:04:30 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-03 19:04:30 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-03 19:04:30 +00:00: (node:66707) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-03 19:04:30 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-03 19:19:43 +00:00: null
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of null (reading 'message')
+    at <anonymous> (webpack://next/dist/esm/server/app-render/create-error-handler.js:57:31)
+    at N (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:54:28)
+    at <anonymous> (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:39:465)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-08-03 19:19:43 +00:00: TypeError: Cannot read properties of null (reading 'message')
+    at <anonymous> (webpack://next/dist/esm/server/app-render/create-error-handler.js:57:31)
+    at N (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:54:28)
+    at <anonymous> (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:39:465)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-08-03 19:55:52 +00:00: null
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of null (reading 'message')
+    at <anonymous> (webpack://next/dist/esm/server/app-render/create-error-handler.js:57:31)
+    at N (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:54:28)
+    at <anonymous> (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:39:465)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-08-03 19:55:52 +00:00: TypeError: Cannot read properties of null (reading 'message')
+    at <anonymous> (webpack://next/dist/esm/server/app-render/create-error-handler.js:57:31)
+    at N (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:54:28)
+    at <anonymous> (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:39:465)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-08-04 01:41:05 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment. Original error: Cannot read properties of undefined (reading 'workers')
+    at getActionModIdOrError (webpack://next/dist/esm/server/app-render/action-handler.js:490:15)
+    at <anonymous> (webpack://next/dist/esm/server/app-render/action-handler.js:360:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async rg (webpack://next/dist/esm/server/app-render/action-handler.js:222:9)
+    at async rz (webpack://next/dist/esm/server/app-render/app-render.js:709:33)
+    at async doRender (/root/alinavigator/node_modules/next/src/server/base-server.ts:2330:20)
+    at async cacheEntry.responseCache.get.routeKind (/root/alinavigator/node_modules/next/src/server/base-server.ts:2569:24)
+    at async NextNodeServer.renderToResponseWithComponentsImpl (/root/alinavigator/node_modules/next/src/server/base-server.ts:2432:24)
+    at async NextNodeServer.renderPageComponent (/root/alinavigator/node_modules/next/src/server/base-server.ts:2976:16)
+    at async NextNodeServer.renderToResponseImpl (/root/alinavigator/node_modules/next/src/server/base-server.ts:3038:24)
+2026-08-04 02:21:53 +00:00: (node:73108) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:21:53 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:21:53 +00:00: (node:73109) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:21:53 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:21:53 +00:00: (node:73131) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:21:53 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:32:54 +00:00: (node:73406) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:32:54 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:32:54 +00:00: (node:73405) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:32:54 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:32:54 +00:00: (node:73428) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:32:54 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:42:51 +00:00: (node:73692) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:42:51 +00:00: (node:73693) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:42:51 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:42:51 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:42:51 +00:00: (node:73715) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:42:51 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:52:27 +00:00: (node:73980) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:52:27 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:52:27 +00:00: (node:73979) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:52:27 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:52:27 +00:00: (node:74002) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:52:27 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:58:45 +00:00: (node:74226) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:58:45 +00:00: (node:74227) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:58:45 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:58:45 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 02:58:45 +00:00: (node:74249) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 02:58:45 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:04:07 +00:00: (node:74483) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:04:07 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:04:07 +00:00: (node:74484) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:04:07 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:04:07 +00:00: (node:74506) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:04:07 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:05:49 +00:00: (node:74707) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:05:49 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:05:49 +00:00: (node:74706) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:05:49 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:05:49 +00:00: (node:74729) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:05:49 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:15:00 +00:00: (node:75266) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:15:00 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:15:00 +00:00: (node:75265) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:15:00 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:15:00 +00:00: (node:75288) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:15:00 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:19:04 +00:00: (node:75654) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:19:04 +00:00: (node:75655) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:19:04 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:19:04 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 03:19:04 +00:00: (node:75678) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 03:19:04 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 04:38:48 +00:00: Error: Failed to find Server Action "x". This request might be from an older or newer deployment. Original error: Cannot read properties of undefined (reading 'workers')
+    at getActionModIdOrError (webpack://next/dist/esm/server/app-render/action-handler.js:490:15)
+    at <anonymous> (webpack://next/dist/esm/server/app-render/action-handler.js:360:46)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async rg (webpack://next/dist/esm/server/app-render/action-handler.js:222:9)
+    at async rz (webpack://next/dist/esm/server/app-render/app-render.js:709:33)
+    at async doRender (/root/alinavigator/node_modules/next/src/server/base-server.ts:2330:20)
+    at async cacheEntry.responseCache.get.routeKind (/root/alinavigator/node_modules/next/src/server/base-server.ts:2569:24)
+    at async NextNodeServer.renderToResponseWithComponentsImpl (/root/alinavigator/node_modules/next/src/server/base-server.ts:2432:24)
+    at async NextNodeServer.renderPageComponent (/root/alinavigator/node_modules/next/src/server/base-server.ts:2976:16)
+    at async NextNodeServer.renderToResponseImpl (/root/alinavigator/node_modules/next/src/server/base-server.ts:3038:24)
+2026-08-04 06:17:25 +00:00: null
+You have triggered an unhandledRejection, you may have forgotten to catch a Promise rejection:
+TypeError: Cannot read properties of null (reading 'message')
+    at <anonymous> (webpack://next/dist/esm/server/app-render/create-error-handler.js:57:31)
+    at N (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:54:28)
+    at <anonymous> (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:39:465)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-08-04 06:17:26 +00:00: TypeError: Cannot read properties of null (reading 'message')
+    at <anonymous> (webpack://next/dist/esm/server/app-render/create-error-handler.js:57:31)
+    at N (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:54:28)
+    at <anonymous> (webpack://next/dist/compiled/react-server-dom-webpack/cjs/react-server-dom-webpack-server.edge.production.min.js:39:465)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-08-04 12:16:31 +00:00: (node:82330) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:16:31 +00:00: (node:82329) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:16:31 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:16:31 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:16:31 +00:00: (node:82352) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:16:31 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:23:20 +00:00: (node:82583) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:23:20 +00:00: (node:82584) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:23:20 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:23:20 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:23:20 +00:00: (node:82606) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:23:20 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:38:27 +00:00: (node:82880) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:38:27 +00:00: (node:82879) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:38:27 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:38:27 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:38:27 +00:00: (node:82902) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:38:27 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:43:52 +00:00: (node:83111) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:43:52 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:43:52 +00:00: (node:83110) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:43:52 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:43:52 +00:00: (node:83133) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:43:52 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:53:21 +00:00: (node:83372) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:53:21 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:53:22 +00:00: (node:83373) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:53:22 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 12:53:22 +00:00: (node:83395) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 12:53:22 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 13:02:36 +00:00: (node:83641) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 13:02:36 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 13:02:36 +00:00: (node:83640) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 13:02:36 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+2026-08-04 13:02:36 +00:00: (node:83663) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///root/alinavigator/next.config.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /root/alinavigator/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+2026-08-04 13:02:36 +00:00:  ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
