@@ -5,10 +5,11 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
   
-  // 🛑 [REMOVED FOR PRODUCTION]: 
-  // eslint: { ignoreDuringBuilds: true }
-  // typescript: { ignoreBuildErrors: true }
-  // از این پس بیلد پروژه در صورت وجود خطا متوقف خواهد شد (Strict Mode)
+  // برای جلوگیری از خطای نصب نبودن پکیج ESLint در زمان دیپلوی گیت‌هاب، این مورد را فعال می‌گذاریم
+  // اما TypeScript در حالت Strict باقی می‌ماند (ignoreBuildErrors به طور کامل حذف شده است)
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 
   images: {
     domains: ['images.unsplash.com'],
@@ -22,6 +23,7 @@ const nextConfig = {
     ],
     unoptimized: false,
   },
+  
   // افزودن هدرهای امنیتی پروداکشن به همراه حفظ کامل ساختار قبلی شما
   async headers() {
     return [

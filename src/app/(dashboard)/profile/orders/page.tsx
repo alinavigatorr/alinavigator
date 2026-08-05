@@ -6,7 +6,7 @@ import { OrderCard } from '@/components/dashboard/orders/order-card';
 import { SkeletonCard } from '@/components/dashboard/skeleton-card';
 import { EmptyState } from '@/components/dashboard/empty-state';
 import { mockOrders } from '@/lib/orders';
-import { OrderStatus } from '@/types/order';
+import type { OrderStatus } from '@/types/order'; // ایمپورت به صورت type برای حالت Strict
 import { Search, SlidersHorizontal, PackageX, PackageSearch } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -37,13 +37,13 @@ export default function OrdersPage() {
   const processedOrders = useMemo(() => {
     let result = [...mockOrders];
 
-    // 1. Search (Order Number or Product Name)
+    // 1. Search (Order Number or Product Name) - اعمال Null-Safety
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       result = result.filter(order =>
-        order.orderNumber.toLowerCase().includes(q) ||
-        // FIX: Added 'any' type to 'item' to pass strict TypeScript build checks
-        order.items.some((item: any) => item.name.toLowerCase().includes(q))
+        (order.orderNumber || '').toLowerCase().includes(q) ||
+        // حذف any و استفاده از تایپ دقیق برای رفع خطای Strict Mode
+        (order.items || []).some((item: { name: string }) => (item.name || '').toLowerCase().includes(q))
       );
     }
 
@@ -52,13 +52,18 @@ export default function OrdersPage() {
       result = result.filter(order => order.status === statusFilter);
     }
 
-    // 3. Sort
+    // 3. Sort - اعمال Null-Safety برای جلوگیری از کرش localeCompare
     result.sort((a, b) => {
       // Mock string date parsing fallback (Real app would use timestamps)
-      if (sortBy === 'newest') return b.date.localeCompare(a.date);
-      if (sortBy === 'oldest') return a.date.localeCompare(b.date);
-      if (sortBy === 'highest_price') return b.priceSummary.total - a.priceSummary.total;
-      if (sortBy === 'lowest_price') return a.priceSummary.total - b.priceSummary.total;
+      if (sortBy === 'newest') return (b.date || '').localeCompare(a.date || '');
+      if (sortBy === 'oldest') return (a.date || '').localeCompare(b.date || '');
+      
+      const aTotal = a.priceSummary?.total || 0;
+      const bTotal = b.priceSummary?.total || 0;
+      
+      if (sortBy === 'highest_price') return bTotal - aTotal;
+      if (sortBy === 'lowest_price') return aTotal - bTotal;
+      
       return 0;
     });
 
