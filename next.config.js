@@ -1,15 +1,15 @@
-/** @type {import('import').NextConfig} */
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  
+  // 🛑 [REMOVED FOR PRODUCTION]: 
+  // eslint: { ignoreDuringBuilds: true }
+  // typescript: { ignoreBuildErrors: true }
+  // از این پس بیلد پروژه در صورت وجود خطا متوقف خواهد شد (Strict Mode)
+
   images: {
     domains: ['images.unsplash.com'],
     remotePatterns: [
@@ -22,7 +22,7 @@ const nextConfig = {
     ],
     unoptimized: false,
   },
-  // افزودن هدرهای امنیتی پروداکشن (فاز ۴) به همراه حفظ کامل ساختار قبلی شما
+  // افزودن هدرهای امنیتی پروداکشن به همراه حفظ کامل ساختار قبلی شما
   async headers() {
     return [
       {
