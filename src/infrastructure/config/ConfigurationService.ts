@@ -10,6 +10,8 @@ export interface FeatureFlags {
   usePrismaProducts: boolean;
   usePrismaCategories: boolean;
   usePrismaUsers: boolean;
+  // اضافه شده برای فاز ۴: فعال‌سازی اتصال فرانت‌اند به API واقعی
+  useRealApi: boolean; 
 }
 
 export interface AppConfiguration {
@@ -38,6 +40,8 @@ export class ConfigurationService {
         usePrismaProducts: process.env.USE_PRISMA_PRODUCTS === 'true',
         usePrismaCategories: process.env.USE_PRISMA_CATEGORIES === 'true',
         usePrismaUsers: process.env.USE_PRISMA_USERS === 'true',
+        // اضافه شده برای فاز ۴: سوییچ لایه شبکه فرانت‌اند
+        useRealApi: process.env.USE_REAL_API === 'true',
       },
       ports: {
         http: parseInt(process.env.PORT || '3000', 10),

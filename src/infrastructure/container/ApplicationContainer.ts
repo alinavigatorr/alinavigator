@@ -5,6 +5,8 @@ import { PrismaProductRepository } from '../database/repositories/PrismaProductR
 // اضافه شده برای فاز ۳: رجیستری وضعیت و لاگ‌گیری مهاجرت
 import { MigrationStatusRegistry, MigrationState } from '../config/MigrationStatusRegistry';
 import { MigrationTelemetry, MigrationEvent } from '../telemetry/MigrationTelemetry';
+// اضافه شده برای فاز ۴: کلاینت یکپارچه API
+import { ApiClient } from '../api/ApiClient';
 
 export class ApplicationContainer implements IApplicationContainer {
   private static instance: ApplicationContainer;
@@ -50,6 +52,14 @@ export class ApplicationContainer implements IApplicationContainer {
 
   private wireProviders(config: ConfigurationService): void {
     const flags = config.getFeatureFlags();
+
+    // اضافه شده در فاز ۴: ثبت ApiClient برای استفاده در لایه فرانت‌اند
+    this.registry.registerFactory('ApiClient', (c) => {
+      return new ApiClient({
+        timeoutMs: 5000, // پیش‌فرض ۵ ثانیه تایم‌اوت
+        useRealApi: flags.useRealApi
+      });
+    });
 
     // Example Provider Resolution Strategy via Feature Flags
     this.registry.registerFactory('IDatabaseProvider', (c) => {
