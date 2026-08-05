@@ -156,7 +156,7 @@ export default function ProductListingPage() {
             {/* بازگرداندن کلمه "مرتب‌سازی" و استایل اورجینال */}
             <div className="flex items-center gap-2">
               <span className="text-sm text-white/50 whitespace-nowrap">مرتب‌سازی:</span>
-              <select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)} className="bg-[#0a0a0a] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#14b8a6] transition-colors cursor-pointer">
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'featured' | 'price-asc' | 'price-desc' | 'rating')} className="bg-[#0a0a0a] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#14b8a6] transition-colors cursor-pointer">
                 <option value="featured">پیش‌فرض (ویژه)</option>
                 <option value="price-asc">ارزان‌ترین</option>
                 <option value="price-desc">گران‌ترین</option>
@@ -231,7 +231,15 @@ export default function ProductListingPage() {
             {!loading && !error && products.length > 0 && (
               <motion.div initial={shouldReduceMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                 {products.map((product) => (
-                  <ProductCard key={product.id} title={product.title} price={product.formattedPrice} category={product.category} rating={product.rating} badge={product.badge} />
+                  <ProductCard 
+                    key={product.id} 
+                    id={product.id} // FIX: این شناسه برای تایپ‌اسکریپت اضافه شد
+                    title={product.title} 
+                    price={product.formattedPrice} 
+                    category={product.category} 
+                    rating={product.rating} 
+                    badge={product.badge} 
+                  />
                 ))}
               </motion.div>
             )}
