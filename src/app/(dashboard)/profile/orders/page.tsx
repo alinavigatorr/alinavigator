@@ -42,7 +42,8 @@ export default function OrdersPage() {
       const q = searchQuery.toLowerCase().trim();
       result = result.filter(order =>
         order.orderNumber.toLowerCase().includes(q) ||
-        order.items.some(item => item.name.toLowerCase().includes(q))
+        // FIX: Added 'any' type to 'item' to pass strict TypeScript build checks
+        order.items.some((item: any) => item.name.toLowerCase().includes(q))
       );
     }
 
