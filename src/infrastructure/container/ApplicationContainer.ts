@@ -2,6 +2,9 @@ import { IntegrationRegistry, IApplicationContainer } from './IntegrationRegistr
 import { EnvironmentProvider } from '../config/EnvironmentProvider';
 import { ConfigurationService } from '../config/ConfigurationService';
 import { PrismaProductRepository } from '../database/repositories/PrismaProductRepository'; // اضافه شده برای فاز ۲
+// اضافه شده برای فاز ۳: رجیستری وضعیت و لاگ‌گیری مهاجرت
+import { MigrationStatusRegistry, MigrationState } from '../config/MigrationStatusRegistry';
+import { MigrationTelemetry, MigrationEvent } from '../telemetry/MigrationTelemetry';
 
 export class ApplicationContainer implements IApplicationContainer {
   private static instance: ApplicationContainer;
@@ -78,13 +81,17 @@ export class ApplicationContainer implements IApplicationContainer {
 
     // Repositories rely on Providers and Feature Flags
     this.registry.registerFactory('IProductRepository', (c) => {
-      // اگر فلگ پریزما روشن باشد، مخزن واقعی متصل می‌شود
-      if (flags.usePrismaRepositories) {
+      // تغییر در فاز ۳: بررسی پرچم اختصاصی ماژول محصولات و ثبت وضعیت مهاجرت
+      if (flags.usePrismaProducts) {
+        MigrationStatusRegistry.track('Products', MigrationState.PRODUCTION);
+        MigrationTelemetry.log(MigrationEvent.STARTED, 'Products');
+
         const prismaClient = c.resolve('PrismaClient');
         return new PrismaProductRepository(prismaClient);
       }
       
       // در غیر این صورت Fallback به حالت Mock برای حفظ پایداری سیستم
+      MigrationStatusRegistry.track('Products', MigrationState.MOCK);
       const dbProvider = c.resolve('IDatabaseProvider');
       return { 
         findById: (id: string) => Promise.resolve(null),

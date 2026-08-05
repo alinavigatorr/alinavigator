@@ -6,6 +6,10 @@ export interface FeatureFlags {
   useRealSearch: boolean;
   useRealPayment: boolean;
   usePrismaRepositories: boolean; // اضافه شده برای فاز ۲: کنترل مخازن پریزما
+  // اضافه شده برای فاز ۳: کنترل دقیق و تفکیک‌شده برای مهاجرت هیبریدی
+  usePrismaProducts: boolean;
+  usePrismaCategories: boolean;
+  usePrismaUsers: boolean;
 }
 
 export interface AppConfiguration {
@@ -30,6 +34,10 @@ export class ConfigurationService {
         useRealPayment: process.env.FLAG_REAL_PAYMENT === 'true',
         // فعال‌سازی مخازن واقعی دیتابیس بر اساس تنظیمات محیطی
         usePrismaRepositories: process.env.USE_PRISMA_REPOSITORIES === 'true',
+        // اضافه شده برای فاز ۳: کنترل مستقل هر ماژول
+        usePrismaProducts: process.env.USE_PRISMA_PRODUCTS === 'true',
+        usePrismaCategories: process.env.USE_PRISMA_CATEGORIES === 'true',
+        usePrismaUsers: process.env.USE_PRISMA_USERS === 'true',
       },
       ports: {
         http: parseInt(process.env.PORT || '3000', 10),
