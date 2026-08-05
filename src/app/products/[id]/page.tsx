@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -6,7 +7,7 @@ import { ProductCard } from '../../../components/ui/product-card';
 import { productService } from '../../../services/productService';
 import { ProductGallery, ProductActions, ProductSpecs } from './components';
 
-// تغییر مسیر به کامپوننت جدید MountedReviewSection
+// بارگذاری پویا برای بخش‌های سنگین‌تر جهت کاهش حجم اولیه JS
 const ReviewSection = dynamic(() => import('../../../components/reviews/MountedReviewSection'), {
   loading: () => <div className="h-64 w-full animate-pulse bg-white/5 rounded-3xl mt-16" />,
   ssr: false
@@ -18,17 +19,22 @@ const QnASection = dynamic(() => import('../../../components/qna/qna-section'), 
 });
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }> | { id: string };
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const product = await productService.getProductById(params.id);
+  const resolvedParams = await params;
+  const product = await productService.getProductById(resolvedParams.id);
   if (!product) return { title: 'محصول یافت نشد - AliNavigator' };
   return { title: `${product.title} - AliNavigator` };
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
-  const product = await productService.getProductById(params.id);
+  // دریافت ایمن متغیر id برای سازگاری کامل با Next.js
+  const resolvedParams = await params;
+  const productId = resolvedParams.id;
+
+  const product = await productService.getProductById(productId);
   
   if (!product) notFound();
 
@@ -37,6 +43,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
   return (
     <div className="flex flex-col min-h-screen pt-32 pb-32 md:pb-24">
       <Container>
+        {/* Breadcrumb - رندر سریع سمت سرور */}
         <nav className="flex items-center gap-2.5 text-xs font-medium text-white/40 mb-10 tracking-wide">
           <Link href="/" className="hover:text-white transition-colors cursor-pointer">خانه</Link>
           <span>/</span>
@@ -45,6 +52,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           <span className="text-[rgb(var(--primary))]">{product.title}</span>
         </nav>
 
+        {/* بخش اصلی محصول (گالری و دکمه‌های خرید - رندر فوری برای LCP) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 mb-20">
           <div className="w-full">
             <ProductGallery />
@@ -69,12 +77,18 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </div>
         </div>
 
+        {/* بخش تعاملی نظرات و پرسش‌وپاسخ با مرزهای Suspense */}
         <div className="mb-24 space-y-12">
-          {/* ارسال productId به کامپوننت نظرات */}
-          <ReviewSection productId={product.id} />
-          <QnASection />
+          <Suspense fallback={<div className="h-64 w-full animate-pulse bg-white/5 rounded-3xl" />}>
+            <ReviewSection productId={product.id} />
+          </Suspense>
+
+          <Suspense fallback={<div className="h-32 w-full animate-pulse bg-white/5 rounded-3xl" />}>
+            <QnASection />
+          </Suspense>
         </div>
 
+        {/* محصولات مشابه */}
         <div className="pt-16 border-t border-white/5 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-[1px] bg-gradient-to-r from-transparent via-[rgb(var(--primary))]/50 to-transparent"></div>
           
@@ -83,20 +97,22 @@ export default async function ProductDetailPage({ params }: PageProps) {
             <button className="text-sm font-medium text-[rgb(var(--primary))] hover:text-white transition-colors">مشاهده همه</button>
           </div>
           
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:gap-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {relatedProducts.map((p) => (
-              <div key={p.id} className="w-[200px] sm:w-[240px] shrink-0 snap-center h-full">
-                <ProductCard
-                  id={p.id}
-                  title={p.title}
-                  price={p.formattedPrice}
-                  category={p.category}
-                  rating={p.rating}
-                  badge={p.badge}
-                />
-              </div>
-            ))}
-          </div>
+          <Suspense fallback={<div className="h-48 w-full animate-pulse bg-white/5 rounded-2xl" />}>
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 -mx-4 px-4 md:mx-0 md:px-0 md:gap-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {relatedProducts.map((p) => (
+                <div key={p.id} className="w-[200px] sm:w-[240px] shrink-0 snap-center h-full">
+                  <ProductCard
+                    id={p.id}
+                    title={p.title}
+                    price={p.formattedPrice}
+                    category={p.category}
+                    rating={p.rating}
+                    badge={p.badge}
+                  />
+                </div>
+              ))}
+            </div>
+          </Suspense>
         </div>
       </Container>
     </div>
