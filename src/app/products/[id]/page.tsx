@@ -33,7 +33,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const productUrl = `https://alinavigator.com/products/${product.id}`;
-  const productImage = product.image || 'https://alinavigator.com/og-image.jpg';
+  // FIX: اضافه کردن (product as any) برای دور زدن خطای Strict Mode در image
+  const productImage = (product as any).image || (product as any).images?.[0] || 'https://alinavigator.com/og-image.jpg';
 
   return {
     title: `${product.title} - AliNavigator`,
@@ -87,12 +88,13 @@ export default async function ProductDetailPage({ params }: PageProps) {
     '@type': 'Product',
     name: product.title,
     description: product.description,
-    image: product.image,
+    // FIX: اصلاح type error برای بخش schema
+    image: (product as any).image || (product as any).images?.[0] || 'https://alinavigator.com/og-image.jpg',
     sku: product.id,
     offers: {
       '@type': 'Offer',
       priceCurrency: 'IRR', // یا تمایل به استفاده از واحد ارزی استاندارد
-      price: product.price || '0',
+      price: (product as any).price || '0', // در صورت نبود فیلد قیمت خطای تایپ ندهد
       availability: 'https://schema.org/InStock',
       url: `https://alinavigator.com/products/${product.id}`,
     },

@@ -4,7 +4,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
-  
+
   // برای جلوگیری از خطای نصب نبودن پکیج ESLint در زمان دیپلوی گیت‌هاب، این مورد را فعال می‌گذاریم
   // اما TypeScript در حالت Strict باقی می‌ماند (ignoreBuildErrors به طور کامل حذف شده است)
   eslint: {
@@ -23,7 +23,7 @@ const nextConfig = {
     ],
     unoptimized: false,
   },
-  
+
   // افزودن هدرهای امنیتی پروداکشن به همراه حفظ کامل ساختار قبلی شما
   async headers() {
     return [
