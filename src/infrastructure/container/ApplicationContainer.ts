@@ -1,6 +1,7 @@
 import { IntegrationRegistry, IApplicationContainer } from './IntegrationRegistry';
 import { EnvironmentProvider } from '../config/EnvironmentProvider';
 import { ConfigurationService } from '../config/ConfigurationService';
+import { PrismaProductRepository } from '../database/repositories/PrismaProductRepository'; // اضافه شده برای فاز ۲
 
 export class ApplicationContainer implements IApplicationContainer {
   private static instance: ApplicationContainer;
@@ -18,7 +19,8 @@ export class ApplicationContainer implements IApplicationContainer {
     this.registry.registerSingleton(ConfigurationService, configService);
 
     this.wireProviders(configService);
-    this.wireRepositories();
+    // ارسال configService برای دسترسی به Feature Flags در مخازن
+    this.wireRepositories(configService);
     this.wireServices();
   }
 
@@ -65,12 +67,29 @@ export class ApplicationContainer implements IApplicationContainer {
     });
   }
 
-  private wireRepositories(): void {
-    // Repositories rely on Providers
+  private wireRepositories(config: ConfigurationService): void {
+    const flags = config.getFeatureFlags();
+
+    // ثبت کلاینت پریزما به عنوان Factory (فقط در زمان نیاز ساخته می‌شود)
+    this.registry.registerFactory('PrismaClient', () => {
+      // در واقعیت اینجا return new PrismaClient() خواهد بود
+      return { product: {} }; // آبجکت موقت برای جلوگیری از خطای کامپایل تا زمان نصب پریزما
+    });
+
+    // Repositories rely on Providers and Feature Flags
     this.registry.registerFactory('IProductRepository', (c) => {
+      // اگر فلگ پریزما روشن باشد، مخزن واقعی متصل می‌شود
+      if (flags.usePrismaRepositories) {
+        const prismaClient = c.resolve('PrismaClient');
+        return new PrismaProductRepository(prismaClient);
+      }
+      
+      // در غیر این صورت Fallback به حالت Mock برای حفظ پایداری سیستم
       const dbProvider = c.resolve('IDatabaseProvider');
-      // return new ProductRepository(dbProvider);
-      return { findById: (id: string) => Promise.resolve(null) }; // Mock fallback
+      return { 
+        findById: (id: string) => Promise.resolve(null),
+        save: (product: any) => Promise.resolve()
+      }; 
     });
   }
 

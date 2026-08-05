@@ -5,6 +5,7 @@ export interface FeatureFlags {
   useRealCache: boolean;
   useRealSearch: boolean;
   useRealPayment: boolean;
+  usePrismaRepositories: boolean; // اضافه شده برای فاز ۲: کنترل مخازن پریزما
 }
 
 export interface AppConfiguration {
@@ -27,6 +28,8 @@ export class ConfigurationService {
         useRealCache: process.env.FLAG_REAL_CACHE === 'true',
         useRealSearch: process.env.FLAG_REAL_SEARCH === 'true',
         useRealPayment: process.env.FLAG_REAL_PAYMENT === 'true',
+        // فعال‌سازی مخازن واقعی دیتابیس بر اساس تنظیمات محیطی
+        usePrismaRepositories: process.env.USE_PRISMA_REPOSITORIES === 'true',
       },
       ports: {
         http: parseInt(process.env.PORT || '3000', 10),
