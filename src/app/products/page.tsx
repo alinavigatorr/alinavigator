@@ -12,7 +12,7 @@ import { Filter, X, ChevronLeft, SlidersHorizontal, AlertCircle, RotateCcw } fro
 
 export default function ProductListingPage() {
   const shouldReduceMotion = useReducedMotion();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -55,7 +55,7 @@ export default function ProductListingPage() {
         sortBy,
       });
       setProducts(data);
-    } catch (err) {
+    } catch {
       setError('خطا در بارگذاری محصولات. لطفاً دوباره تلاش کنید.');
     } finally {
       setLoading(false);
@@ -82,7 +82,6 @@ export default function ProductListingPage() {
     (maxPrice < 20000000 ? 1 : 0) +
     (inStockOnly ? 1 : 0);
 
-  // کامپوننت داخلی برای نمایش فیلترها (مشترک بین سایدبار دسکتاپ و منوی موبایل)
   const FilterContent = () => (
     <>
       <div className="flex items-center justify-between pb-4 border-b border-white/10">
@@ -90,7 +89,6 @@ export default function ProductListingPage() {
         {activeFiltersCount > 0 && <button onClick={resetFilters} className="text-xs text-[#14b8a6] hover:underline">بازنشانی</button>}
       </div>
       
-      {/* دسته‌بندی (لیست عمودی اورجینال) */}
       <div className="space-y-3 pt-4">
         <h3 className="text-sm font-semibold text-white/80">دسته‌بندی</h3>
         <div className="space-y-1.5">
@@ -101,7 +99,6 @@ export default function ProductListingPage() {
         </div>
       </div>
       
-      {/* برند سازنده (لیست عمودی اورجینال) */}
       <div className="space-y-3 pt-4 border-t border-white/10">
         <h3 className="text-sm font-semibold text-white/80">برند سازنده</h3>
         <div className="space-y-1.5">
@@ -112,14 +109,12 @@ export default function ProductListingPage() {
         </div>
       </div>
       
-      {/* محدوده قیمت (طراحی اورجینال) */}
       <div className="space-y-3 pt-4 border-t border-white/10">
         <h3 className="text-sm font-semibold text-white/80">محدوده قیمت</h3>
         <input type="range" min="500000" max="20000000" step="500000" value={maxPrice} onChange={(e) => setMaxPrice(Number(e.target.value))} className="w-full accent-[#14b8a6] cursor-pointer" />
         <div className="flex justify-between text-xs text-white/50"><span>۰</span><span>{maxPrice.toLocaleString()} تومان</span></div>
       </div>
       
-      {/* کالاهای موجود (چک‌باکس اورجینال) */}
       <div className="space-y-3 pt-4 border-t border-white/10 pb-4">
         <label className="flex items-center gap-3 cursor-pointer">
           <input type="checkbox" checked={inStockOnly} onChange={(e) => setInStockOnly(e.target.checked)} className="rounded border-white/20 bg-black text-[#14b8a6] focus:ring-[#14b8a6] focus:ring-offset-0 w-4 h-4 cursor-pointer" />
@@ -130,18 +125,15 @@ export default function ProductListingPage() {
   );
 
   return (
-    // حذف bg-[#0a0a0a] برای بازگشت به بک‌گراند جذاب سایت شما
     <div className="flex flex-col min-h-screen pt-[120px] pb-20">
       <Container>
         
-        {/* Navigation / Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-white/50 mb-8">
           <Link href="/" className="hover:text-white transition-colors">خانه</Link>
           <ChevronLeft className="w-4 h-4" />
           <span className="text-white font-medium">محصولات</span>
         </nav>
 
-        {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">کاتالوگ محصولات حرفه‌ای</h1>
@@ -153,7 +145,6 @@ export default function ProductListingPage() {
               فیلترها {activeFiltersCount > 0 && `(${activeFiltersCount})`}
             </button>
             
-            {/* بازگرداندن کلمه "مرتب‌سازی" و استایل اورجینال */}
             <div className="flex items-center gap-2">
               <span className="text-sm text-white/50 whitespace-nowrap">مرتب‌سازی:</span>
               <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'featured' | 'price-asc' | 'price-desc' | 'rating')} className="bg-[#0a0a0a] border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-[#14b8a6] transition-colors cursor-pointer">
@@ -166,7 +157,6 @@ export default function ProductListingPage() {
           </div>
         </div>
 
-        {/* Active Filters (استایل اورجینال با رنگ #14b8a6) */}
         {activeFiltersCount > 0 && (
           <div className="flex flex-wrap items-center gap-2 mb-6">
             <span className="text-xs text-white/40">فیلترهای فعال:</span>
@@ -196,12 +186,10 @@ export default function ProductListingPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
-          {/* Sidebar (بازگرداندن کادر، پس‌زمینه و پدینگ) */}
           <aside className="hidden lg:block lg:col-span-1 bg-white/[0.02] border border-white/5 p-6 rounded-2xl h-fit sticky top-[100px]">
             <FilterContent />
           </aside>
 
-          {/* Main Grid */}
           <main className="lg:col-span-3">
             {error && (
               <div className="flex flex-col items-center justify-center p-12 rounded-2xl bg-red-500/10 border border-red-500/20 text-center">
@@ -213,7 +201,6 @@ export default function ProductListingPage() {
             )}
             
             {loading && !error && (
-              // حفظ سایز کارت‌های کوچک‌تر که تایید کردید (cols-2 و cols-3)
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                 {[...Array(8)].map((_, i) => <ProductSkeleton key={i} />)}
               </div>
@@ -233,7 +220,7 @@ export default function ProductListingPage() {
                 {products.map((product) => (
                   <ProductCard 
                     key={product.id} 
-                    id={product.id} // FIX: این شناسه برای تایپ‌اسکریپت اضافه شد
+                    id={product.id} 
                     title={product.title} 
                     price={product.formattedPrice} 
                     category={product.category} 
@@ -247,7 +234,6 @@ export default function ProductListingPage() {
         </div>
       </Container>
 
-      {/* Mobile Filter Drawer */}
       <AnimatePresence>
         {mobileFilterOpen && (
           <>
