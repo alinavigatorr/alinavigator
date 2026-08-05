@@ -1,40 +1,53 @@
 #!/bin/bash
 
-# Exit immediately if a command exits with a non-zero status
+# خروج از اسکریپت در صورت بروز خطا
 set -e
 
-echo "=========================================="
-echo "Starting Marketplace Deployment..."
-echo "=========================================="
+PROJECT_DIR="/root/alinavigator"
+BACKUP_DIR="/root/alinavigator_backup"
 
-# 1. Pull latest changes from the repository (uncomment if git is initialized on server)
-# echo "Pulling latest code from Git..."
-# git pull origin main
+echo "➡️ [1/7] Navigating to project directory..."
+cd "$PROJECT_DIR"
 
-# 2. Install dependencies with clean cache for production
-echo "Installing dependencies..."
-npm ci --production=false
+echo "➡️ [2/7] Pulling latest code from GitHub..."
+git pull origin main
 
-# 3. Build Next.js standalone application
-echo "Building Next.js application..."
-npm run build
+echo "➡️ [3/7] Installing dependencies safely..."
+npm install --production=false
 
-# 4. Ensure logs directory exists for PM2
-mkdir -p logs
-
-# 5. Restart or start application with PM2
-echo "Managing PM2 process..."
-if pm2 describe marketplace-app > /dev/null 2>&1; then
-  echo "Reloading existing PM2 process..."
-  pm2 reload ecosystem.config.js --env production
-else
-  echo "Starting new PM2 process..."
-  pm2 start ecosystem.config.js --env production
+echo "➡️ [4/7] Backing up current working build..."
+if [ -d ".next" ]; then
+  rm -rf "$BACKUP_DIR"
+  cp -r .next "$BACKUP_DIR"
 fi
 
-echo "Save PM2 process list..."
+echo "➡️ [5/7] Building Next.js production bundle..."
+if ! npm run build; then
+  echo "❌ Build failed! Restoring previous build..."
+  if [ -d "$BACKUP_DIR" ]; then
+    rm -rf .next
+    cp -r "$BACKUP_DIR" .next
+  fi
+  exit 1
+fi
+
+echo "➡️ [6/7] Preparing standalone output assets..."
+cp -r public .next/standalone/
+cp -r .next/static .next/standalone/.next/
+
+echo "➡️ [7/7] Safely restarting application via PM2..."
+pm2 delete marketplace-app || true
+pm2 start ecosystem.config.js
 pm2 save
 
-echo "=========================================="
-echo "Deployment Completed Successfully!"
-echo "=========================================="
+echo "🔍 Running Post-Deployment Health Check..."
+sleep 3
+
+# بررسی سلامت سایت روی پورت ۳۰۰۰
+HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || echo "000")
+
+if [ "$HTTP_STATUS" -eq 200 ]; then
+  echo "✅ Deployment Successful! Application is healthy and responding with HTTP 200."
+else
+  echo "⚠️ Warning: Health check returned HTTP status: $HTTP_STATUS. Please inspect PM2 logs."
+fi
