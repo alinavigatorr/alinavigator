@@ -11,7 +11,15 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: [],
+    domains: ['images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
     unoptimized: false,
   },
   webpack: (config, { isServer }) => {

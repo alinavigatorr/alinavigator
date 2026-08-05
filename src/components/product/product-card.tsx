@@ -1,11 +1,13 @@
 'use client';
+
+import React, { memo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, ShoppingCart, Star } from 'lucide-react';
 import { Product } from '../../types/product';
 import { motion } from 'framer-motion';
 
-export function ProductCard({ product }: { product: Product }) {
+export const ProductCard = memo(({ product }: { product: Product }) => {
   const discountPercent = product.discountPrice 
     ? Math.round(((product.price - product.discountPrice) / product.price) * 100) 
     : 0;
@@ -43,6 +45,7 @@ export function ProductCard({ product }: { product: Product }) {
           src={product.image} 
           alt={product.title}
           fill
+          loading="lazy"
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
         />
@@ -92,4 +95,6 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
     </motion.div>
   );
-}
+});
+
+ProductCard.displayName = 'Product_ProductCard';
