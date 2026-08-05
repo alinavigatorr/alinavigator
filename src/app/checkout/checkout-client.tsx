@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { FormInput } from '../../components/checkout/form-input';
 import { DeliveryMethods, DeliveryMethod } from '../../components/checkout/delivery-methods';
 import { OrderSummary } from '../../components/checkout/order-summary';
-import { ShoppingBag, ArrowRight } from 'lucide-react';
+// FIX: Added CheckCircle2 to the import list to resolve the build error
+import { ShoppingBag, ArrowRight, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
